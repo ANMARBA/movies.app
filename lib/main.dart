@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/commons/widgets/widgets.dart';
 import 'package:movies_app/views/welcome/pages/welcome_page.dart';
 
 void main() {
@@ -13,7 +14,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      builder: (context, child) {
+        return ScrollConfiguration(
+          behavior: CustomScrollBehavior(),
+          child: child!,
+        );
+      },
       theme: ThemeData(
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
         // Define the default font family.
         fontFamily: 'Gilroy',
 
