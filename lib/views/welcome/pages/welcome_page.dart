@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:movies_app/views/welcome/welcome.dart';
 
@@ -61,33 +62,86 @@ class LoginPage extends StatefulWidget {
   State createState() => LoginPageState();
 }
 
+final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
 class LoginPageState extends State<LoginPage> {
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
-    _modalBottomSheet();
+    _modalBottomSheet(_formKey, _usernameController, _passwordController);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BackgroundImage(
-        child: SafeArea(
-          child: Stack(alignment: AlignmentDirectional.center, children: [
-            Positioned(
-              top: kToolbarHeight,
-              child: Text(
-                'Welcome!',
-                style: Theme.of(context).textTheme.headline1,
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AuthenticationBloc, AuthentificationState?>(
+          bloc: context.read<AuthenticationBloc>(),
+          listener: (_, state) {
+            if (state is AuthenticationAuthenticated) {
+              BotToast.cleanAll();
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => const HomePage()),
+                  (route) => false);
+            }
+          },
+        ),
+        BlocListener<LoginBloc, LoginState?>(
+          bloc: context.read<LoginBloc>(),
+          listener: (_, state) {
+            if (state is LoginFailure) {
+              BotToast.cleanAll();
+              BotToast.showSimpleNotification(
+                title: 'Email o contraseña incorrecta',
+                backgroundColor: Colors.red.withOpacity(0.9),
+                backButtonBehavior: BackButtonBehavior.ignore,
+                titleStyle: const TextStyle(
+                  color: Colors.white,
+                ),
+                hideCloseButton: true,
+              );
+            } else if (state is LoginLoading) {
+              BotToast.showLoading(
+                  backButtonBehavior: BackButtonBehavior.ignore);
+            }
+          },
+        ),
+      ],
+      child: Scaffold(
+        body: BackgroundImage(
+          child: SafeArea(
+            child: Stack(alignment: AlignmentDirectional.center, children: [
+              Positioned(
+                top: kToolbarHeight,
+                child: Text(
+                  'Welcome!',
+                  style: Theme.of(context).textTheme.headline1,
+                ),
               ),
-            ),
-          ]),
+            ]),
+          ),
         ),
       ),
     );
   }
 
-  void _modalBottomSheet() {
+  void _validateForm() =>
+      _formKey.currentState!.validate() ? _onLoginButtonPressed() : null;
+
+  void _onLoginButtonPressed() {
+    context.read<LoginBloc>().add(LoginButtonPressed(
+          username: _usernameController.text,
+          password: _passwordController.text,
+        ));
+  }
+
+  void _modalBottomSheet(
+      Key? formKey,
+      TextEditingController? usernameController,
+      TextEditingController? passwordController) {
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
       await ModalBottomSheet.showModalBottomSheetCustom(
         context: context,
@@ -95,17 +149,24 @@ class LoginPageState extends State<LoginPage> {
         enableDrag: false,
         backgroundColor: Constants.secondColor.withOpacity(0.9),
         onPressedClose: () {
+          //Close ModalBottomSheet
+          Navigator.pop(context);
+          //Go to Back
           Navigator.pop(context);
         },
-        contentModal: Column(
-          children: const [
-            TextFieldCustom(hintText: 'Name'),
-            SizedBox(height: 40),
-            TextFieldCustom(hintText: 'Password'),
-          ],
+        contentModal: Form(
+          key: formKey,
+          child: Column(
+            children: [
+              TextFieldCustom(hintText: 'Name', controller: usernameController),
+              const SizedBox(height: 40),
+              TextFieldCustom(
+                  hintText: 'Password', controller: passwordController),
+            ],
+          ),
         ),
         contentBottomModal: ElevatedButton(
-          onPressed: () {},
+          onPressed: () => _validateForm(),
           child: const Text('Log in'),
         ),
       );
