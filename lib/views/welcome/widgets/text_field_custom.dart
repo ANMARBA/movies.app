@@ -3,7 +3,12 @@ import 'package:movies_app/commons/constants/constants.dart';
 
 class TextFieldCustom extends StatelessWidget {
   final String hintText;
-  const TextFieldCustom({Key? key, required this.hintText}) : super(key: key);
+  final TextEditingController? controller;
+  const TextFieldCustom({
+    Key? key,
+    required this.hintText,
+    this.controller,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +18,9 @@ class TextFieldCustom extends StatelessWidget {
       );
     }
 
-    return TextField(
+    return TextFormField(
       cursorColor: Constants.thirdColor,
+      controller: controller,
       style: const TextStyle(color: Constants.thirdColor),
       decoration: InputDecoration(
         border: _inputBorder(),
@@ -23,6 +29,9 @@ class TextFieldCustom extends StatelessWidget {
         hintText: hintText,
         hintStyle: const TextStyle(color: Constants.thirdColor),
       ),
+      validator: (value) {
+        return value!.isEmpty ? 'Este campo es obligatorio' : null;
+      },
     );
   }
 }
