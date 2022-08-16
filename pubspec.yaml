@@ -41,8 +41,6 @@ dependencies:
   transparent_image: ^2.0.0
   favorite_button: ^0.0.3
   carousel_slider: ^4.0.0
-
-dev_dependencies:
   flutter_test:
     sdk: flutter
 

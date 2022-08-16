@@ -25,7 +25,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final Widget? widgetTest;
+  const MyApp({Key? key, this.widgetTest}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -107,16 +108,17 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ),
-          home: BlocBuilder<AuthenticationBloc, AuthentificationState>(
-            builder: (context, state) {
-              if (state is AuthenticationAuthenticated) {
-                return const HomePage();
-              } else if (state is AuthenticationUnauthenticated) {
-                return const WelcomePage();
-              }
-              return Container();
-            },
-          ),
+          home: widgetTest ??
+              BlocBuilder<AuthenticationBloc, AuthentificationState>(
+                builder: (context, state) {
+                  if (state is AuthenticationAuthenticated) {
+                    return const HomePage();
+                  } else if (state is AuthenticationUnauthenticated) {
+                    return const WelcomePage();
+                  }
+                  return Container();
+                },
+              ),
         ),
       ),
     );

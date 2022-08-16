@@ -8,6 +8,7 @@ class BackgroundImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       constraints: const BoxConstraints.expand(),
+      alignment: FractionalOffset.center,
       decoration: const BoxDecoration(
         image: DecorationImage(
           image: AssetImage("assets/images/welcome_screen.jpg"),

@@ -1,0 +1,1 @@
+flutter test test/widgets/welcome/welcome_test.dart

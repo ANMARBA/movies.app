@@ -4,7 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/views/welcome/welcome.dart';
 
 class WelcomePage extends StatelessWidget {
-  const WelcomePage({Key? key}) : super(key: key);
+  const WelcomePage({Key? key = const ValueKey('WelcomePageKey')})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +19,7 @@ class WelcomePage extends StatelessWidget {
                 top: kToolbarHeight,
                 child: Text(
                   'Welcome!',
+                  key: const ValueKey('welcomeText'),
                   style: Theme.of(context).textTheme.headline1,
                 ),
               ),
@@ -28,6 +30,7 @@ class WelcomePage extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.only(top: 10, bottom: 10),
                     child: ElevatedButton(
+                      key: const ValueKey('buttonLogin'),
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -56,7 +59,8 @@ class WelcomePage extends StatelessWidget {
 }
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({Key? key = const ValueKey('LoginPageKey')})
+      : super(key: key);
 
   @override
   State createState() => LoginPageState();
@@ -118,6 +122,7 @@ class LoginPageState extends State<LoginPage> {
                 top: kToolbarHeight,
                 child: Text(
                   'Welcome!',
+                  key: const ValueKey('welcomeText'),
                   style: Theme.of(context).textTheme.headline1,
                 ),
               ),
@@ -158,14 +163,20 @@ class LoginPageState extends State<LoginPage> {
           key: formKey,
           child: Column(
             children: [
-              TextFieldCustom(hintText: 'Name', controller: usernameController),
+              TextFieldCustom(
+                  key: const ValueKey('userTextForm'),
+                  hintText: 'Name',
+                  controller: usernameController),
               const SizedBox(height: 40),
               TextFieldCustom(
-                  hintText: 'Password', controller: passwordController),
+                  key: const ValueKey('passwordTextForm'),
+                  hintText: 'Password',
+                  controller: passwordController),
             ],
           ),
         ),
         contentBottomModal: ElevatedButton(
+          key: const ValueKey('buttonLogin'),
           onPressed: () => _validateForm(),
           child: const Text('Log in'),
         ),
