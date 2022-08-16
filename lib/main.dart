@@ -5,11 +5,16 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:movies_app/bloc/login/login.dart';
 import 'package:movies_app/commons/widgets/widgets.dart';
+import 'package:movies_app/data/repositories/home_repository_impl.dart';
 import 'package:movies_app/data/repositories/user_repository_impl.dart';
 import 'package:movies_app/data/services/authentification_service_impl.dart';
+import 'package:movies_app/data/services/home_service_impl.dart';
 import 'package:movies_app/domain/services/authentification_service.dart';
+import 'package:movies_app/domain/services/home_service.dart';
 import 'package:movies_app/views/home/pages/home_page.dart';
 import 'package:movies_app/views/welcome/pages/welcome_page.dart';
+
+import 'bloc/home/home.dart';
 
 void main() async {
   // Allows for async code in main method
@@ -30,9 +35,16 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<AuthentificationService>(
           create: (_) => AuthentificationServiceImpl(),
         ),
+        RepositoryProvider<HomeService>(
+          create: (_) => HomeServiceImpl(),
+        ),
         RepositoryProvider<UserRepository>(
           create: (context) => UserRepositoryImpl(
               authentificationService: context.read<AuthentificationService>()),
+        ),
+        RepositoryProvider<HomeRepository>(
+          create: (context) =>
+              HomeRepositoryImpl(homeService: context.read<HomeService>()),
         ),
       ],
       child: MultiBlocProvider(
@@ -74,6 +86,7 @@ class MyApp extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 decoration: TextDecoration.underline,
               ),
+              headline3: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ).apply(
               displayColor: Colors.white,
             ),
