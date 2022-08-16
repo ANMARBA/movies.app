@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movies_app/commons/constants/constants.dart';
+import 'package:movies_app/domain/entities/tv/tv.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class Popular extends StatelessWidget {
-  final List popular;
+  final List<Tv> popular;
 
   const Popular({Key? key, required this.popular}) : super(key: key);
 
@@ -43,20 +44,20 @@ class Popular extends StatelessWidget {
                         ),
                         child: FadeInImage.memoryNetwork(
                           image:
-                              'https://image.tmdb.org/t/p/original${popular[i]["poster_path"]}',
+                              'https://image.tmdb.org/t/p/original${popular[i].posterPath}',
                           placeholder: kTransparentImage,
                           fit: BoxFit.contain,
                         ),
                       ),
                       const SizedBox(height: 6.0),
                       Text(
-                        popular[i]["name"],
+                        popular[i].name,
                         maxLines: 2,
                         style: Theme.of(context).textTheme.headline1,
                       ),
                       const SizedBox(height: 12.0),
                       RatingBar.builder(
-                        initialRating: (popular[i]["vote_average"] % 5.0),
+                        initialRating: (popular[i].voteAverage % 5.0),
                         itemSize: 15.0,
                         ignoreGestures: true,
                         itemBuilder: (context, _) => const Icon(
