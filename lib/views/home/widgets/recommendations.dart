@@ -79,12 +79,11 @@ class Recommendations extends StatelessWidget {
                                 onRatingUpdate: (rating) {},
                               ),
                               const SizedBox(height: 20.0),
-                              const Text(
-                                'IMDb: 9,4',
+                              Text(
+                                'IMDb: ${recommendations[i].voteAverage}',
                                 maxLines: 2,
                                 textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    fontSize: 12, color: Colors.white),
+                                style: Theme.of(context).textTheme.headline4,
                               ),
                               const SizedBox(height: 20.0),
                               Row(
