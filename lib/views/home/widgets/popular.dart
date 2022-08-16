@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:transparent_image/transparent_image.dart';
+
 import 'package:movies_app/commons/constants/constants.dart';
 import 'package:movies_app/domain/entities/tv/tv.dart';
-import 'package:transparent_image/transparent_image.dart';
+import 'package:movies_app/views/home/pages/detail_page.dart';
 
 class Popular extends StatelessWidget {
   final List<Tv> popular;
@@ -29,45 +31,55 @@ class Popular extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
               itemBuilder: (_, int i) {
-                return Container(
-                  width: 160.0,
-                  padding: const EdgeInsets.only(right: 20.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10.0),
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              DetailPage(series: popular, currentSerie: i)),
+                    );
+                  },
+                  child: Container(
+                    width: 160.0,
+                    padding: const EdgeInsets.only(right: 20.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: FadeInImage.memoryNetwork(
+                            image:
+                                'https://image.tmdb.org/t/p/original${popular[i].posterPath}',
+                            placeholder: kTransparentImage,
+                            fit: BoxFit.contain,
+                          ),
                         ),
-                        child: FadeInImage.memoryNetwork(
-                          image:
-                              'https://image.tmdb.org/t/p/original${popular[i].posterPath}',
-                          placeholder: kTransparentImage,
-                          fit: BoxFit.contain,
+                        const SizedBox(height: 6.0),
+                        Text(
+                          popular[i].name,
+                          maxLines: 2,
+                          style: Theme.of(context).textTheme.headline1,
                         ),
-                      ),
-                      const SizedBox(height: 6.0),
-                      Text(
-                        popular[i].name,
-                        maxLines: 2,
-                        style: Theme.of(context).textTheme.headline1,
-                      ),
-                      const SizedBox(height: 12.0),
-                      RatingBar.builder(
-                        initialRating: (popular[i].voteAverage % 5.0),
-                        itemSize: 15.0,
-                        ignoreGestures: true,
-                        itemBuilder: (context, _) => const Icon(
-                          Icons.star,
-                          color: Colors.white,
+                        const SizedBox(height: 12.0),
+                        RatingBar.builder(
+                          initialRating: (popular[i].voteAverage % 5.0),
+                          itemSize: 15.0,
+                          ignoreGestures: true,
+                          itemBuilder: (context, _) => const Icon(
+                            Icons.star,
+                            color: Colors.white,
+                          ),
+                          unratedColor: Constants.thirdColor,
+                          onRatingUpdate: (rating) {},
                         ),
-                        unratedColor: Constants.thirdColor,
-                        onRatingUpdate: (rating) {},
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               },
