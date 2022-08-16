@@ -5,8 +5,15 @@ import 'package:movies_app/views/welcome/pages/welcome_page.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
+  final bool? centerTitle;
+  final bool visibleSettings;
 
-  const CustomAppBar({Key? key, required this.title}) : super(key: key);
+  const CustomAppBar({
+    Key? key,
+    required this.title,
+    this.centerTitle = true,
+    this.visibleSettings = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,18 +27,21 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       },
       child: AppBar(
         elevation: 0.0,
-        centerTitle: true,
+        centerTitle: centerTitle,
         title: Text(title),
         shadowColor: Colors.white,
         backgroundColor: Colors.transparent,
         toolbarHeight: 70.0,
         actions: [
-          IconButton(
-            padding: const EdgeInsets.only(right: 20.0),
-            onPressed: () =>
-                context.read<AuthenticationBloc>().add(LoggedOut()),
-            icon: const Icon(Icons.settings_outlined),
-          )
+          Visibility(
+            visible: visibleSettings,
+            child: IconButton(
+              padding: const EdgeInsets.only(right: 20.0),
+              onPressed: () =>
+                  context.read<AuthenticationBloc>().add(LoggedOut()),
+              icon: const Icon(Icons.settings_outlined),
+            ),
+          ),
         ],
       ),
     );
