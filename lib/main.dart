@@ -87,6 +87,7 @@ class MyApp extends StatelessWidget {
                 decoration: TextDecoration.underline,
               ),
               headline3: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              headline4: TextStyle(fontSize: 12),
             ).apply(
               displayColor: Colors.white,
             ),
