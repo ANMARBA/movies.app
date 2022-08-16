@@ -5,9 +5,10 @@ import 'package:transparent_image/transparent_image.dart';
 
 import 'package:movies_app/commons/constants/constants.dart';
 import 'package:movies_app/commons/widgets/widgets.dart';
+import 'package:movies_app/domain/entities/tv/tv.dart';
 
 class Recommendations extends StatelessWidget {
-  final List recommendations;
+  final List<Tv> recommendations;
 
   const Recommendations({Key? key, required this.recommendations})
       : super(key: key);
@@ -48,7 +49,7 @@ class Recommendations extends StatelessWidget {
                           ),
                           child: FadeInImage.memoryNetwork(
                             image:
-                                'https://image.tmdb.org/t/p/original${recommendations[i]["poster_path"]}',
+                                'https://image.tmdb.org/t/p/original${recommendations[i].posterPath}',
                             placeholder: kTransparentImage,
                             fit: BoxFit.contain,
                           ),
@@ -60,14 +61,14 @@ class Recommendations extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Text(
-                                recommendations[i]["name"],
+                                recommendations[i].name,
                                 maxLines: 2,
                                 style: Theme.of(context).textTheme.headline1,
                               ),
                               const SizedBox(height: 20.0),
                               RatingBar.builder(
                                 initialRating:
-                                    (recommendations[i]["vote_average"] % 5.0),
+                                    (recommendations[i].voteAverage % 5.0),
                                 itemSize: 15.0,
                                 ignoreGestures: true,
                                 itemBuilder: (context, _) => const Icon(
