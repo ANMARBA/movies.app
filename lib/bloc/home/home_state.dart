@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:movies_app/domain/entities/tv/tv.dart';
 
 abstract class HomeState extends Equatable {
   @override
@@ -6,8 +7,8 @@ abstract class HomeState extends Equatable {
 }
 
 class GetList extends HomeState {
-  final List popular;
-  final List recommendations;
+  final List<Tv> popular;
+  final List<Tv> recommendations;
 
   GetList({required this.popular, required this.recommendations});
 
